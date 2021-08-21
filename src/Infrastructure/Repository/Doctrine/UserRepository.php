@@ -2,20 +2,41 @@
 
 namespace App\Infrastructure\Repository\Doctrine;
 
-use App\Domain\User\UserRepositoryInterface;
-use Doctrine\ORM\EntityRepository;
+use App\Domain\User;
+use App\Domain\UserRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 
-class User extends EntityRepository implements UserRepositoryInterface
+class UserRepository implements UserRepositoryInterface
 {
-    public function getAllUsers($orderByPrimaryKey = 'ASC'): array
+    /** @var EntityManagerInterface $entityManager */
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        return $this->createQueryBuilder('user')
-            ->getQuery()
-            ->getResult();
+        $this->entityManager = $entityManager;
     }
 
-    public function getUserById()
+    public function findAll($orderByPrimaryKey = 'ASC'): array
     {
-        // TODO: Implement getUserById() method.
+        try {
+            return $this->entityManager
+                ->getRepository(User::class)
+                ->findAll();
+        } catch (NoResultException $e) {
+
+        }
+    }
+
+    public function find($id)
+    {
+//        return $this->entityManager
+//            ->createQueryBuilder('u')
+//            ->where('u.id = :id')
+//            ->setParameters(array(
+//                'id' => $id
+//            ))
+//            ->getQuery()
+//            ->getOneOrNullResult();
     }
 }

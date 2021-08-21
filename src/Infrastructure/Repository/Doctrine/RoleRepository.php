@@ -2,17 +2,25 @@
 
 namespace App\Infrastructure\Repository\Doctrine;
 
-use App\Domain\Role\RoleRepositoryInterface;
-use Doctrine\ORM\EntityRepository;
+use App\Domain\RoleRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
-class RoleInterface extends EntityRepository implements RoleRepositoryInterface
+class RoleRepository implements RoleRepositoryInterface
 {
-    public function getAllRoles($orderByPrimaryKey = 'ASC')
+    /** @var EntityManagerInterface $entityManager */
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    public function findAll($orderByPrimaryKey = 'ASC'): array
     {
         // TODO: Implement getAllRoles() method.
     }
 
-    public function getRoleById()
+    public function find($id)
     {
         // TODO: Implement getRoleById() method.
     }

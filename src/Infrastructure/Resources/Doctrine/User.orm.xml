@@ -12,12 +12,6 @@
             <unique-constraint columns="name" name="search_idx" />
         </unique-constraints>
 
-        <lifecycle-callbacks>
-            <lifecycle-callback type="prePersist" method="doStuffOnPrePersist"/>
-            <lifecycle-callback type="prePersist" method="doOtherStuffOnPrePersistToo"/>
-            <lifecycle-callback type="postPersist" method="doStuffOnPostPersist"/>
-        </lifecycle-callbacks>
-
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
             <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1" />
@@ -25,20 +19,11 @@
 
         <field name="name" column="name" type="string" length="50" nullable="true" unique="true" />
         <field name="email" column="email" type="string" column-definition="CHAR(32) NOT NULL" />
+        <many-to-one field="role" target-entity="App\Domain\Role">
+            <cascade />
+            <join-column name="role" referenced-column-name="id" nullable="false" />
+        </many-to-one>
 
-        <many-to-many field="role" target-entity="Role">
-            <cascade>
-                <cascade-all/>
-            </cascade>
-            <join-table name="user_roles">
-                <join-columns>
-                    <join-column name="id" referenced-column-name="id" nullable="false" unique="false" />
-                </join-columns>
-                <inverse-join-columns>
-                    <join-column name="id" referenced-column-name="id" column-definition="INT NULL" />
-                </inverse-join-columns>
-            </join-table>
-        </many-to-many>
 
     </entity>
 

@@ -1,21 +1,32 @@
 <?php
 
-namespace App\Controller\Public;
+namespace App\Controller;
 
+use App\Domain\User;
+use App\Serializer\UserSerializer;
+use App\Application\User\GetAllUsers;
+use Domain\Product\Product;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController
+class UserController extends AbstractController
 {
     /**
      * @Route("/users/all", name="users_all")
+     *
+     * @param GetAllUsers $getAllUsers
+     * @param UserSerializer $userSerializer
+     * @return Response
      */
-    public function getUsers(int $max): Response
+    public function getUsers(GetAllUsers $getAllUsers, UserSerializer $userSerializer): Response
     {
-        $number = random_int(0, $max);
+        $users = $getAllUsers->request();
 
-        return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
-        );
+        return $this->json([
+            'users' => array_map(function (User $user) use($userSerializer): array {
+                return $userSerializer->serializeSingle($user);
+            }, $users)
+        ]);
     }
 }

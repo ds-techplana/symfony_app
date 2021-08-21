@@ -14,7 +14,7 @@ class RoleAll
         $this->name = $name;
     }
 
-    public static function create(Request $request)
+    public static function get(Request $request)
     {
         return new self(
             $request->get('id'),

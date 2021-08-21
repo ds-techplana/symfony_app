@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Domain;
 
 /**
  * Interface UserRepositoryInterface
- * @package App\Domain\User
+ * @package App\Domain
  */
 interface UserRepositoryInterface
 {

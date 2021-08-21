@@ -12,12 +12,6 @@
             <unique-constraint columns="name" name="search_idx" />
         </unique-constraints>
 
-        <lifecycle-callbacks>
-            <lifecycle-callback type="prePersist" method="doStuffOnPrePersist"/>
-            <lifecycle-callback type="prePersist" method="doOtherStuffOnPrePersistToo"/>
-            <lifecycle-callback type="postPersist" method="doStuffOnPostPersist"/>
-        </lifecycle-callbacks>
-
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
             <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1" />

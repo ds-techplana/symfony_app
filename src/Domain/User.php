@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\User;
+namespace App\Domain;
 
-use App\Domain\Role\Role;
+use App\Domain\Role;
 
 /**
  * Class User
- * @package App\Domain\User
+ * @package App\Domain
  */
 class User
 {
