@@ -1,20 +1,41 @@
 <?php
+
 namespace App\Infrastructure\DTO;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class RoleAll
+ * @package App\Infrastructure\DTO
+ */
 class RoleAll
 {
-    private $id;
-    private $name;
+    /**
+     * @var int
+     */
+    private int $id;
 
-    private function __construct($id, $name)
+    /**
+     * @var string
+     */
+    private string $name;
+
+    /**
+     * RoleAll constructor.
+     * @param int $id
+     * @param string $name
+     */
+    private function __construct(int $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;
     }
 
-    public static function get(Request $request)
+    /**
+     * @param Request $request
+     * @return RoleAll
+     */
+    public static function get(Request $request): RoleAll
     {
         return new self(
             $request->get('id'),

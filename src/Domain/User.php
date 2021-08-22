@@ -24,29 +24,41 @@ class User
 
     /**
      * User constructor.
-     * @param int $id
      * @param string $name
      * @param string $email
      * @param Role $role
      */
-    private function __construct(int $id, string $name, string $email, Role $role)
+    private function __construct(string $name, string $email, Role $role)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->email = $email;
         $this->role = $role;
     }
 
     /**
-     * @param int $id
      * @param string $name
      * @param string $email
      * @param Role $role
      * @return User
      */
-    public static function create(int $id, string $name, string $email, Role $role): User
+    public static function create(string $name, string $email, Role $role): User
     {
-        return new self($id, $name, $email, $role);
+        return new self($name, $email, $role);
+    }
+
+    /**
+     * @param string $name
+     * @param string $email
+     * @param \App\Domain\Role $role
+     * @return User
+     */
+    public function update(string $name, string $email, Role $role): User
+    {
+        $this->name = $name;
+        $this->email = $email;
+        $this->role = $role;
+
+        return $this;
     }
 
     /**
@@ -64,6 +76,7 @@ class User
     {
         return $this->email;
     }
+
     /**
      * @return string
      */

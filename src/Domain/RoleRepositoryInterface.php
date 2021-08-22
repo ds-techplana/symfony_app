@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Domain;
 
 /**
@@ -7,6 +8,15 @@ namespace App\Domain;
  */
 interface RoleRepositoryInterface
 {
+    /**
+     * @param string $orderByPrimaryKey
+     * @return array
+     */
     public function findALl($orderByPrimaryKey = 'ASC'): array;
-    public function find($id);
+
+    /**
+     * @param $id
+     * @return Role|null
+     */
+    public function find($id): ?Role;
 }

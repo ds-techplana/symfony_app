@@ -4,12 +4,20 @@ namespace App\Serializer;
 
 use App\Domain\Role;
 
+/**
+ * Class RoleSerializer
+ * @package App\Serializer
+ */
 class RoleSerializer
 {
 
-    public function serializeSingle(Role $role)
+    /**
+     * @param Role $role
+     * @return array
+     */
+    public function serializeSingle(Role $role): array
     {
-        return  [
+        return [
             'id' => $role->getId(),
             'name' => $role->getName()
         ];

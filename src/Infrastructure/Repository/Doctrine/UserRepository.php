@@ -5,38 +5,44 @@ namespace App\Infrastructure\Repository\Doctrine;
 use App\Domain\User;
 use App\Domain\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NoResultException;
 
+/**
+ * Class UserRepository
+ * @package App\Infrastructure\Repository\Doctrine
+ */
 class UserRepository implements UserRepositoryInterface
 {
     /** @var EntityManagerInterface $entityManager */
     private EntityManagerInterface $entityManager;
 
+    /**
+     * UserRepository constructor.
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param string $orderByPrimaryKey
+     * @return array
+     */
     public function findAll($orderByPrimaryKey = 'ASC'): array
     {
-        try {
-            return $this->entityManager
-                ->getRepository(User::class)
-                ->findAll();
-        } catch (NoResultException $e) {
-
-        }
+        return $this->entityManager
+            ->getRepository(User::class)
+            ->findAll();
     }
 
-    public function find($id)
+    /**
+     * @param $id
+     * @return User|null
+     */
+    public function find($id): ?User
     {
-//        return $this->entityManager
-//            ->createQueryBuilder('u')
-//            ->where('u.id = :id')
-//            ->setParameters(array(
-//                'id' => $id
-//            ))
-//            ->getQuery()
-//            ->getOneOrNullResult();
+        return $this->entityManager
+            ->getRepository(User::class)
+            ->find($id);
     }
 }

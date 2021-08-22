@@ -8,7 +8,15 @@ namespace App\Domain;
  */
 interface UserRepositoryInterface
 {
+    /**
+     * @param string $orderByPrimaryKey
+     * @return array
+     */
     public function findAll($orderByPrimaryKey = 'ASC'): array;
 
-    public function find($id); //TODO: add : ?User if through serializer
+    /**
+     * @param $id
+     * @return User|null
+     */
+    public function find($id): ?User;
 }
