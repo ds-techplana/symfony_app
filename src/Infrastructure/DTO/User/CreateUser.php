@@ -18,7 +18,9 @@ class UserAll
     {
         return new self(
             $request->get('id'),
-            $request->get('name')
+            $request->get('name'),
+            $request->get('role'),
+            $request->get('role'),
         );
     }
 }

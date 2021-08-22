@@ -1,0 +1,30 @@
+{% extends 'main/base.html.twig' %}
+
+{% block body %}
+    <h1>Create user</h1>
+    <div class="row">
+        <div class="col-12">
+            <form action="{{ path('userCreate') }}" method="post">
+                <div class="form-group">
+                    <label for="inputName">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="User name" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail">Email</label>
+                    <input type="email"  name="email" class="form-control" id="email" placeholder="Email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select class="form-control" name="role" required>
+                        <option></option>
+                        {% for role in roles %}
+                            <option id="role" name="role" value="{{ role.id }}">{{ role.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
