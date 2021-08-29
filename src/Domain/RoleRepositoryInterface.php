@@ -19,4 +19,10 @@ interface RoleRepositoryInterface
      * @return Role|null
      */
     public function find($id): ?Role;
+
+    /**
+     * @param $name
+     * @return Role|null
+     */
+    public function findByName($name): ?Role;
 }

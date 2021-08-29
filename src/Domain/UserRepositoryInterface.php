@@ -9,10 +9,11 @@ namespace App\Domain;
 interface UserRepositoryInterface
 {
     /**
-     * @param string $orderByPrimaryKey
+     * @param string $order
+     * @param string $orderBy
      * @return array
      */
-    public function findAll($orderByPrimaryKey = 'ASC'): array;
+    public function findAll($order = 'ASC', $orderBy = 'id'): array;
 
     /**
      * @param $id

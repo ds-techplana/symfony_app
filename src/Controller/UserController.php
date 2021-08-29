@@ -15,6 +15,7 @@ use App\Infrastructure\Validation\UserValidation;
 use App\Serializer\RoleSerializer;
 use App\Serializer\UserSerializer;
 use App\Application\User\GetAllUsers;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,15 +52,19 @@ class UserController extends AbstractController
     /**
      * @Route("/users/all", name="usersAll")
      *
+     * @param Request $request
      * @param GetAllUsers $getAllUsers
      * @param UserSerializer $userSerializer
      * @return Response
      */
-    public function getUsers(GetAllUsers $getAllUsers, UserSerializer $userSerializer): Response
+    public function getUsers(Request $request, GetAllUsers $getAllUsers, UserSerializer $userSerializer): Response
     {
-        $users = $getAllUsers->request();
-
+        $users = $getAllUsers->request($request);
+        $order = $request->get('order');
+        $orderBy = $request->get('orderBy');
         return $this->render('user/users.html.twig', [
+            'orderBy' => isset($orderBy) ? $orderBy : 'name',
+            'order' => isset($order) ? $order : 'ASC',
             'users' => array_map(function (User $user) use ($userSerializer): array {
                 return $userSerializer->serializeSingle($user);
             }, $users)
@@ -86,7 +91,7 @@ class UserController extends AbstractController
 
         try {
             $createUserCommand->handle(CreateUser::create($request));
-        } catch (ConflictHttpException $exception) {
+        } catch (ConflictHttpException | EntityNotFoundException  $exception) {
             $validationException = $exception;
         }
 

@@ -46,4 +46,15 @@ class RoleRepository implements RoleRepositoryInterface
             ->getRepository(Role::class)
             ->find($id);
     }
+
+    /**
+     * @param $name
+     * @return Role|null
+     */
+    public function findByName($name): ?Role
+    {
+        return $this->entityManager
+            ->getRepository(Role::class)
+            ->findOneBy(['name' => $name]);
+    }
 }

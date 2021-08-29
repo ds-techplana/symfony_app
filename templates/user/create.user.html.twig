@@ -5,6 +5,11 @@
     <div class="row">
         <div class="col-12">
             <form action="{{ path('userCreate') }}" method="post">
+                <span>
+                    {% if validationError is defined %}
+                        {{ validationError.message }}
+                    {% endif %}
+                </span>
                 <div class="form-group">
                     <label for="inputName">Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="User name" required>

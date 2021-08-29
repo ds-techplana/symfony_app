@@ -3,6 +3,7 @@
 namespace App\Application\User;
 
 use App\Domain\UserRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class GetAllUsers
@@ -23,10 +24,17 @@ class GetAllUsers
     }
 
     /**
-     * @return mixed
+     * @param Request $request
+     * @return array
      */
-    public function request()
+    public function request(Request $request)
     {
+        $order = $request->get('order');
+        $orderBy = $request->get('orderBy');
+        if($order && $orderBy) {
+            return $this->userRepository->findAll($order, $orderBy);
+        }
+
         return $this->userRepository->findAll();
     }
 }
