@@ -16,12 +16,12 @@ use App\Serializer\RoleSerializer;
 use App\Serializer\UserSerializer;
 use App\Application\User\GetAllUsers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 class UserController extends AbstractController
 {
@@ -71,24 +71,47 @@ class UserController extends AbstractController
      *
      * @param Request $request
      * @param CreateUserCommand $createUserCommand
-     * @return RedirectResponse
+     * @param RoleSerializer $roleSerializer
+     * @param GetAllRoles $getAllRoles
+     * @return RedirectResponse|Response
+     * @throws \Doctrine\ORM\EntityNotFoundException
      */
-    public function createUser(Request $request, CreateUserCommand $createUserCommand)
+    public function createUser(Request $request, CreateUserCommand $createUserCommand, RoleSerializer $roleSerializer, GetAllRoles $getAllRoles)
     {
-        UserValidation::createUser();
-        $createUserCommand->handle(CreateUser::create($request));
+        try {
+            UserValidation::createUser($request);
+        } catch (ValidatorException $exception) {
+            $validationException = $exception;
+        }
+
+        try {
+            $createUserCommand->handle(CreateUser::create($request));
+        } catch (ConflictHttpException $exception) {
+            $validationException = $exception;
+        }
+
+        if(isset($validationException)) {
+            $roles = $getAllRoles->request();
+
+            return $this->render('user/create.user.html.twig', [
+                'validationError' => $validationException,
+                'roles' => array_map(function (Role $role) use ($roleSerializer): array {
+                    return $roleSerializer->serializeSingle($role);
+                }, $roles)
+            ]);
+        }
 
         return $this->redirectToRoute('usersAll');
     }
 
     /**
-     * @Route(path="/user/new", methods={"GET"}, name="userNew")
+     * @Route(path="/user/create", methods={"GET"}, name="userNew")
      *
      * @param GetAllRoles $getAllRoles
      * @param RoleSerializer $roleSerializer
      * @return Response
      */
-    public function createNew(GetAllRoles $getAllRoles, RoleSerializer $roleSerializer)
+    public function getCreateUser(GetAllRoles $getAllRoles, RoleSerializer $roleSerializer)
     {
         $roles = $getAllRoles->request();
 
